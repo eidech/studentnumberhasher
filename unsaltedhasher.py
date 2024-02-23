@@ -7,13 +7,19 @@ def generate_md5_hash(value):
     md5_hash.update(str(value).encode('utf-8'))
     return md5_hash.hexdigest()
 
+def generate_sha512_hash(value):
+    sha512_hash = hashlib.sha512()
+    value_with_salt = str(value)
+    sha512_hash.update(value_with_salt.encode('utf-8'))
+    return sha512_hash.hexdigest()
+
 def process_excel_file(file_path):
     # Load the Excel file
     df = pd.read_excel(file_path)
 
-    # Iterate over the column 'student_studentNumber' and replace values with MD5 hashes
+    # Iterate over the column 'student_studentNumber' and replace values with SHA512 hashes
     column_name = 'student_studentNumber'
-    df[column_name] = df[column_name].apply(generate_md5_hash)
+    df[column_name] = df[column_name].apply(generate_sha512_hash)
 
     # Save the modified DataFrame to a new Excel file
     new_file_path = 'HASHED_' + file_path
